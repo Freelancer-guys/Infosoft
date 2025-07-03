@@ -76,7 +76,7 @@ const Header: React.FC = () => {
               onClick={() => navigate('/payment')}
               className="bg-teal-600 text-white px-5 py-2 rounded-full text-sm font-semibold hover:bg-teal-700 transition-all"
             >
-              Get Started
+              Pay as You Go
             </button>
           </nav>
 
