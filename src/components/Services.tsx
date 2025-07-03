@@ -86,12 +86,7 @@ const Services: React.FC = () => {
         </div>
 
         {/* Bottom CTA */}
-        <div className={`text-center mt-16 ${isVisible ? 'animate-slide-up animate-stagger-6' : ''}`}>
-          <p className="text-gray-600 mb-6">Ready to transform your business?</p>
-          <button className="bg-gradient-to-r from-blue-600 to-emerald-600 text-white px-8 py-4 rounded-full font-semibold hover:from-blue-700 hover:to-emerald-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105">
-            Get Started Today
-          </button>
-        </div>
+        
       </div>
     </section>
   );

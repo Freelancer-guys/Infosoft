@@ -80,9 +80,18 @@ const Hero: React.FC = () => {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.7 }}
         >
-          <button className="bg-teal-600 text-white px-8 py-3 rounded-full font-semibold text-lg shadow-lg hover:scale-105 hover:shadow-xl transition-all duration-300">
+          <button
+            onClick={() => {
+              const contact = document.getElementById('contact');
+              if (contact) {
+                contact.scrollIntoView({ behavior: 'smooth' });
+              }
+            }}
+            className="bg-teal-600 text-white px-8 py-3 rounded-full font-semibold text-lg shadow-lg hover:scale-105 hover:shadow-xl transition-all duration-300"
+          >
             Start Your Journey
           </button>
+
 
           <button className="flex items-center text-teal-700 hover:text-emerald-600 font-medium">
             <div className="w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center mr-3 shadow-inner">
