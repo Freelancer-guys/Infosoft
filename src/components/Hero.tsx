@@ -82,23 +82,18 @@ const Hero: React.FC = () => {
         >
           <button
             onClick={() => {
-              const contact = document.getElementById('contact');
+              const contact = document.getElementById('services');
               if (contact) {
                 contact.scrollIntoView({ behavior: 'smooth' });
               }
             }}
             className="bg-teal-600 text-white px-8 py-3 rounded-full font-semibold text-lg shadow-lg hover:scale-105 hover:shadow-xl transition-all duration-300"
           >
-            Start Your Journey
+            Explore our Services
           </button>
 
 
-          <button className="flex items-center text-teal-700 hover:text-emerald-600 font-medium">
-            <div className="w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center mr-3 shadow-inner">
-              <Play className="w-6 h-6" />
-            </div>
-            Watch Our Story
-          </button>
+          
         </motion.div>
       </motion.div>
 

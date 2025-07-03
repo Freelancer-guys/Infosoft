@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import {
   CreditCard,
-  Shield,
-  Lock,
   CheckCircle,
-  Calendar,
-  User,
-  Mail,
   X,
+  Lock,
 } from 'lucide-react';
 
 interface FormData {
@@ -21,8 +17,9 @@ interface FormData {
   amount: number;
   billingAddress: {
     street: string;
-    suburb: string;
+    country: string;
     state: string;
+    city: string;
     postcode: string;
   };
 }
@@ -67,8 +64,9 @@ const PaymentGateway: React.FC<PaymentGatewayProps> = ({ onClose }) => {
     amount: 0,
     billingAddress: {
       street: '',
-      suburb: '',
+      country: 'Australia',
       state: '',
+      city: '',
       postcode: '',
     },
   });
@@ -135,8 +133,9 @@ const PaymentGateway: React.FC<PaymentGatewayProps> = ({ onClose }) => {
       amount: 0,
       billingAddress: {
         street: '',
-        suburb: '',
+        country: 'Australia',
         state: '',
+        city: '',
         postcode: '',
       },
     });
@@ -174,7 +173,7 @@ const PaymentGateway: React.FC<PaymentGatewayProps> = ({ onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="relative bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-8">
+      <div className="relative bg-white rounded-xl shadow-2xl max-w-xl w-full max-h-[90vh] overflow-y-auto p-8">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
@@ -229,80 +228,33 @@ const PaymentGateway: React.FC<PaymentGatewayProps> = ({ onClose }) => {
             </div>
           )}
 
-          <div>
-            <label className="block font-medium mb-1">Email</label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleInputChange}
-              className="w-full border rounded-lg px-4 py-2"
-              placeholder="your@email.com"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block font-medium mb-1">Cardholder Name</label>
-            <input
-              type="text"
-              name="cardholderName"
-              value={formData.cardholderName}
-              onChange={handleInputChange}
-              className="w-full border rounded-lg px-4 py-2"
-              placeholder="John Doe"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block font-medium mb-1">Card Number</label>
-            <input
-              type="text"
-              name="cardNumber"
-              value={formData.cardNumber}
-              onChange={handleInputChange}
-              className="w-full border rounded-lg px-4 py-2"
-              placeholder="1234 5678 9012 3456"
-              required
-            />
-          </div>
+          <input type="email" name="email" placeholder="your@email.com" value={formData.email} onChange={handleInputChange} className="w-full border rounded-lg px-4 py-2" required />
+          <input type="text" name="cardholderName" placeholder="John Doe" value={formData.cardholderName} onChange={handleInputChange} className="w-full border rounded-lg px-4 py-2" required />
+          <input type="text" name="cardNumber" placeholder="1234 5678 9012 3456" value={formData.cardNumber} onChange={handleInputChange} className="w-full border rounded-lg px-4 py-2" required />
 
           <div className="flex gap-4">
-            <div className="w-1/2">
-              <label className="block font-medium mb-1">Expiry Date</label>
-              <input
-                type="text"
-                name="expiryDate"
-                value={formData.expiryDate}
-                onChange={handleInputChange}
-                className="w-full border rounded-lg px-4 py-2"
-                placeholder="MM/YY"
-                required
-              />
-            </div>
-            <div className="w-1/2">
-              <label className="block font-medium mb-1">CVV</label>
-              <input
-                type="text"
-                name="cvv"
-                value={formData.cvv}
-                onChange={handleInputChange}
-                className="w-full border rounded-lg px-4 py-2"
-                placeholder="123"
-                required
-              />
-            </div>
+            <input type="text" name="expiryDate" placeholder="MM/YY" value={formData.expiryDate} onChange={handleInputChange} className="w-1/2 border rounded-lg px-4 py-2" required />
+            <input type="text" name="cvv" placeholder="123" value={formData.cvv} onChange={handleInputChange} className="w-1/2 border rounded-lg px-4 py-2" required />
+          </div>
+
+          <h3 className="font-semibold text-lg mt-4">Billing Address</h3>
+          <input type="text" name="billingAddress.street" placeholder="123 Main Street" value={formData.billingAddress.street} onChange={handleInputChange} className="w-full border rounded-lg px-4 py-2 mt-2" />
+          <input type="text" name="billingAddress.country" value={formData.billingAddress.country} disabled className="w-full border rounded-lg px-4 py-2 mt-2 bg-gray-100 cursor-not-allowed" />
+          <input type="text" name="billingAddress.state" placeholder="State/Province" value={formData.billingAddress.state} onChange={handleInputChange} className="w-full border rounded-lg px-4 py-2 mt-2" />
+          <input type="text" name="billingAddress.city" placeholder="City" value={formData.billingAddress.city} onChange={handleInputChange} className="w-full border rounded-lg px-4 py-2 mt-2" />
+          <input type="text" name="billingAddress.postcode" placeholder="Post Code" value={formData.billingAddress.postcode} onChange={handleInputChange} className="w-full border rounded-lg px-4 py-2 mt-2" />
+
+          <div className="mt-4 flex items-center gap-2 bg-gray-50 border rounded-lg p-3 text-sm text-gray-600">
+            <Lock className="w-5 h-5 text-green-600" />
+            <span><strong>Secure Payment:</strong> Your payment information is encrypted and secure. We use industry-standard SSL encryption to protect your data.</span>
           </div>
 
           <button
             onClick={handleSubmit}
             disabled={isProcessing || !formData.selectedService}
-            className={`w-full bg-teal-600 text-white rounded-lg px-6 py-3 font-semibold transition ${
-              isProcessing ? 'opacity-50 cursor-not-allowed' : 'hover:bg-teal-700'
-            }`}
+            className={`w-full mt-2 bg-gradient-to-r from-teal-500 to-cyan-500 text-white rounded-lg px-6 py-3 font-semibold transition ${isProcessing ? 'opacity-50 cursor-not-allowed' : 'hover:opacity-90'}`}
           >
-            {isProcessing ? 'Processing...' : `Pay $${formData.amount || 0}`}
+            {isProcessing ? 'Processing...' : `Pay A$${formData.amount || 0}`}
           </button>
         </div>
       </div>
