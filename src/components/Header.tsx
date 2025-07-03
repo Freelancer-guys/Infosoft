@@ -116,7 +116,7 @@ const Header: React.FC = () => {
               }}
               className="w-3/4 mt-6 bg-teal-500 text-white px-6 py-3 rounded-full font-semibold text-lg hover:bg-teal-400"
             >
-              Get Started
+              Pay as You Go
             </button>
           </nav>
         </div>
