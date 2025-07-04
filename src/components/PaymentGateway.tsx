@@ -28,28 +28,22 @@ interface PaymentGatewayProps {
   onClose: () => void;
 }
 
-interface Services {
-  [key: string]: {
-    [key: string]: number;
-  };
-}
-
-const services: Services = {
-  'Cloud Computing': {
-    'Strategy & Migration': 2999,
-    'Management & Security': 1999,
-    'Cost Optimization': 1499,
-  },
-  'Data Management': {
-    'Database & Warehousing': 3499,
-    'Big Data & Analytics': 4999,
-    'Data Governance': 2499,
-  },
-  'IT Support & Managed Services': {
-    '24/7 Technical Support': 899,
-    'Infrastructure Monitoring': 1299,
-    'Cybersecurity': 1899,
-  },
+const services: { [key: string]: string[] } = {
+  'Cloud Computing': [
+    'Strategy & Migration',
+    'Management & Security',
+    'Cost Optimization',
+  ],
+  'Data Management': [
+    'Database & Warehousing',
+    'Big Data & Analytics',
+    'Data Governance',
+  ],
+  'IT Support & Managed Services': [
+    '24/7 Technical Support',
+    'Infrastructure Monitoring',
+    'Cybersecurity',
+  ],
 };
 
 const PaymentGateway: React.FC<PaymentGatewayProps> = ({ onClose }) => {
@@ -71,8 +65,8 @@ const PaymentGateway: React.FC<PaymentGatewayProps> = ({ onClose }) => {
     },
   });
 
-  const [isProcessing, setIsProcessing] = useState<boolean>(false);
-  const [isSuccess, setIsSuccess] = useState<boolean>(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
@@ -99,18 +93,19 @@ const PaymentGateway: React.FC<PaymentGatewayProps> = ({ onClose }) => {
       return;
     }
 
-    let newFormData = { ...formData, [name]: value };
-
-    if (name === 'serviceCategory') {
-      newFormData.selectedService = '';
-      newFormData.amount = 0;
+    if (name === 'amount') {
+      setFormData((prev) => ({ ...prev, amount: parseFloat(value) || 0 }));
+      return;
     }
 
-    if (name === 'selectedService' && value && formData.serviceCategory) {
-      newFormData.amount = services[formData.serviceCategory][value];
-    }
-
-    setFormData(newFormData);
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+      ...(name === 'serviceCategory' && {
+        selectedService: '',
+        amount: 0,
+      }),
+    }));
   };
 
   const handleSubmit = () => {
@@ -219,13 +214,25 @@ const PaymentGateway: React.FC<PaymentGatewayProps> = ({ onClose }) => {
                 required
               >
                 <option value="">Select a service</option>
-                {Object.keys(services[formData.serviceCategory]).map((service) => (
+                {services[formData.serviceCategory].map((service) => (
                   <option key={service} value={service}>
-                    {service} - ${services[formData.serviceCategory][service]}
+                    {service}
                   </option>
                 ))}
               </select>
             </div>
+          )}
+
+          {formData.selectedService && (
+            <input
+              type="number"
+              name="amount"
+              placeholder="Enter invoice amount (AUD)"
+              value={formData.amount || ''}
+              onChange={handleInputChange}
+              className="w-full border rounded-lg px-4 py-2"
+              required
+            />
           )}
 
           <input type="email" name="email" placeholder="your@email.com" value={formData.email} onChange={handleInputChange} className="w-full border rounded-lg px-4 py-2" required />
@@ -251,7 +258,7 @@ const PaymentGateway: React.FC<PaymentGatewayProps> = ({ onClose }) => {
 
           <button
             onClick={handleSubmit}
-            disabled={isProcessing || !formData.selectedService}
+            disabled={isProcessing || !formData.selectedService || !formData.amount}
             className={`w-full mt-2 bg-gradient-to-r from-teal-500 to-cyan-500 text-white rounded-lg px-6 py-3 font-semibold transition ${isProcessing ? 'opacity-50 cursor-not-allowed' : 'hover:opacity-90'}`}
           >
             {isProcessing ? 'Processing...' : `Pay A$${formData.amount || 0}`}
