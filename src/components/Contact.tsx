@@ -92,7 +92,7 @@ const Contact: React.FC = () => {
     {
       icon: BadgeCheck,
       title: 'ABN',
-      info: '92 683 984 975',
+      info: '92 683 984 974',
       subInfo: 'Infosoft Tech PTY LTD'
     }
   ];
